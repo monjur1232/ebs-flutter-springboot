@@ -19,14 +19,12 @@ public class AttendanceController implements ICommonController<Attendance> {
 	@Autowired
 	private AttendanceRepository attendanceRepository;
 
-	// ✅ Get all attendance records
 	@Override
 	@GetMapping
 	public List<Attendance> getAll() {
 		return attendanceRepository.findAll();
 	}
 
-	// ✅ Get single attendance by ID
 	@Override
 	@GetMapping("/{id}")
 	public ResponseEntity<Attendance> getById(@PathVariable(value = "id") Long attendanceId) {
@@ -34,20 +32,17 @@ public class AttendanceController implements ICommonController<Attendance> {
 		return ResponseEntity.ok().body(attendance);
 	}
 
-	// ✅ Save single attendance (not used in bulk entry but kept for compatibility)
 	@Override
 	@PostMapping
 	public Attendance save(@Validated @RequestBody Attendance attendance) {
 		return attendanceRepository.save(attendance);
 	}
 
-	// ✅ Bulk save attendance for multiple employees
 	@PostMapping("/bulk")
 	public List<Attendance> saveAll(@RequestBody List<Attendance> attendances) {
 		return attendanceRepository.saveAll(attendances);
 	}
 
-	// ✅ Update attendance by ID
 	@Override
 	@PutMapping("/{id}")
 	public ResponseEntity<Attendance> update(@PathVariable(value = "id") Long attendanceId,
@@ -66,7 +61,6 @@ public class AttendanceController implements ICommonController<Attendance> {
 		return ResponseEntity.ok(updatedAttendance);
 	}
 
-	// ✅ Delete attendance by ID
 	@Override
 	@DeleteMapping("/{id}")
 	public Map<String, Boolean> delete(@PathVariable(value = "id") Long attendanceId) {
@@ -76,8 +70,6 @@ public class AttendanceController implements ICommonController<Attendance> {
 		response.put("deleted", Boolean.TRUE);
 		return response;
 	}
-
-	// Payroll
 
 	@GetMapping("/absent-count/{employeeCode}")
 	public ResponseEntity<Map<String, Integer>> getAbsentCount(@PathVariable Long employeeCode) {
@@ -94,7 +86,6 @@ public class AttendanceController implements ICommonController<Attendance> {
 			}
 		}
 
-		// 3 Late = 1 Absent
 		absentCount += lateCount / 3;
 
 		Map<String, Integer> response = new HashMap<>();
